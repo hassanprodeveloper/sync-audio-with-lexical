@@ -2,17 +2,24 @@
 import React from "react";
 import AudioUploadForm from "@/components/AudioUploadForm";
 import StepsProgress from "@/components/StepsProgress";
+import LexicalEditor from "@/components/LexicalEditor";
 
 const defaultData = {
   audio: "",
+  editorState: {} as any,
 };
 const App = () => {
-  const [step, setStep] = React.useState(1);
+  const [step, setStep] = React.useState(2);
   const [data, setData] = React.useState(defaultData);
 
   const onUploadAudioSuccessful = (url: string) => {
     setStep(2);
     setData({ ...data, audio: url });
+  };
+
+  const onTextFormattingComplete = (editorState: any) => {
+    setStep(3);
+    setData({ ...data, editorState });
   };
 
   return (
@@ -25,8 +32,10 @@ const App = () => {
             <AudioUploadForm
               onUploadAudioSuccessful={onUploadAudioSuccessful}
             />
+          ) : step === 2 ? (
+            <LexicalEditor onComplete={onTextFormattingComplete} />
           ) : (
-            <div>step 2</div>
+            <div>step 3</div>
           )}
         </div>
       </div>
