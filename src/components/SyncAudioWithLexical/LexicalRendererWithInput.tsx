@@ -73,10 +73,6 @@ const TextNode = ({ node, onSave, currentSeconds }: TextNodeProps) => {
     <div
       style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 4 }}
     >
-      {startTime && endTime && !saved && (
-        <button onClick={handleSave}>Save</button>
-      )}
-
       <input
         placeholder="Start Time"
         onChange={handleStartTimeChange}
@@ -89,6 +85,10 @@ const TextNode = ({ node, onSave, currentSeconds }: TextNodeProps) => {
         onChange={handleEndTimeChange}
         value={endTime}
       />
+
+      {startTime && endTime && !saved && (
+        <button onClick={handleSave}>Save</button>
+      )}
 
       <span
         style={{

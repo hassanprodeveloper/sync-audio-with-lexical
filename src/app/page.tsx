@@ -977,7 +977,7 @@ const defaultData = {
   },
 };
 const App = () => {
-  const [step, setStep] = React.useState(4);
+  const [step, setStep] = React.useState(1);
   const [data, setData] = React.useState(defaultData);
 
   const onUploadAudioSuccessful = (url: string) => {
@@ -1030,6 +1030,7 @@ const App = () => {
               handleAddTimeToTextNode={handleAddTimeToTextNode}
               onComplete={() => {
                 setStep(4);
+                window.scrollTo(0, 0);
               }}
             />
           ) : (
