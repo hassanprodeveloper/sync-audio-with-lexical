@@ -5,6 +5,7 @@ import StepsProgress from "@/components/StepsProgress";
 import LexicalEditor from "@/components/LexicalEditor";
 import SyncAudioWithLexical from "@/components/SyncAudioWithLexical";
 import { addTimeToTextNode, assignUniqueIdsToTextNodes } from "@/helpers";
+import Preview from "@/components/Preview";
 
 const defaultData = {
   audio:
@@ -976,7 +977,7 @@ const defaultData = {
   },
 };
 const App = () => {
-  const [step, setStep] = React.useState(3);
+  const [step, setStep] = React.useState(4);
   const [data, setData] = React.useState(defaultData);
 
   const onUploadAudioSuccessful = (url: string) => {
@@ -1032,7 +1033,7 @@ const App = () => {
               }}
             />
           ) : (
-            <div>step 3</div>
+            <Preview audio={data.audio} lexical={data.editorState} />
           )}
         </div>
       </div>

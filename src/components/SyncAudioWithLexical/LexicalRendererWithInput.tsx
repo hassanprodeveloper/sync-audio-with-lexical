@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 interface Props {
   lexicalJson: any;
   saveNodeTime: (id: string, startTime: number, endTime: number) => void;
+  currentSeconds?: number;
 }
 
-const LexicalTextRenderer = (props: Props) => {
-  const { lexicalJson, saveNodeTime } = props;
+const LexicalRendererWithInput = (props: Props) => {
+  const { lexicalJson, saveNodeTime, currentSeconds } = props;
 
   const renderNode = (node: any, key: string): JSX.Element | null => {
     if (node.type === "text") {
@@ -15,6 +16,7 @@ const LexicalTextRenderer = (props: Props) => {
         <TextNode
           key={node.id}
           node={node}
+          currentSeconds={currentSeconds}
           onSave={(s, e) => saveNodeTime(node.id, s, e)}
         />
       );
@@ -34,13 +36,14 @@ const LexicalTextRenderer = (props: Props) => {
   return <div>{renderNode(lexicalJson.root, "root")}</div>;
 };
 
-export default LexicalTextRenderer;
+export default LexicalRendererWithInput;
 
 interface TextNodeProps {
   node: any;
+  currentSeconds?: number;
   onSave: (startTime: number, endTime: number) => void;
 }
-const TextNode = ({ node, onSave }: TextNodeProps) => {
+const TextNode = ({ node, onSave, currentSeconds }: TextNodeProps) => {
   const [startTime, setStartTime] = useState(node.startTime || "");
   const [endTime, setEndTime] = useState(node.endTime || "");
   const [saved, setSaved] = useState(false);
@@ -58,6 +61,13 @@ const TextNode = ({ node, onSave }: TextNodeProps) => {
     onSave(Number(startTime), Number(endTime));
     setSaved(true);
   };
+
+  const isActive = useMemo(() => {
+    const start = node.startTime ? Number(node.startTime) : 0;
+    const end = node.endTime ? Number(node.endTime) : 0;
+
+    return currentSeconds && currentSeconds >= start && currentSeconds <= end;
+  }, [currentSeconds, node.startTime, node.endTime]);
 
   return (
     <div
@@ -84,7 +94,7 @@ const TextNode = ({ node, onSave }: TextNodeProps) => {
         style={{
           flex: 1,
           direction: "rtl",
-          color: saved ? "green" : "inherit",
+          color: saved || isActive ? "green" : "inherit",
         }}
       >
         {node.text}

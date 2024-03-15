@@ -2,13 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 
 interface AudioPlayerProps {
   audioUrl: string;
+  syncCurrentTime?: (currentTime: number) => void;
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({
+  audioUrl,
+  syncCurrentTime,
+}) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+
+  const updateCurrentTimeHandler = (time: number) => {
+    setCurrentTime(time);
+    syncCurrentTime && syncCurrentTime(time);
+  };
 
   // Play or pause the audio when the isPlaying state changes
   useEffect(() => {
@@ -27,12 +36,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl }) => {
     const setAudioData = () => {
       if (audio) {
         setDuration(audio.duration);
-        setCurrentTime(audio.currentTime);
+        updateCurrentTimeHandler(audio.currentTime);
       }
     };
 
     const setAudioTime = () => {
-      setCurrentTime(audio?.currentTime || 0);
+      updateCurrentTimeHandler(audio?.currentTime || 0);
     };
 
     audio?.addEventListener("loadedmetadata", setAudioData);
@@ -42,6 +51,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl }) => {
       audio?.removeEventListener("loadedmetadata", setAudioData);
       audio?.removeEventListener("timeupdate", setAudioTime);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioUrl]);
 
   const togglePlayPause = () => {

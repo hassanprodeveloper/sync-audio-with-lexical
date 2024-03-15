@@ -1,5 +1,5 @@
 import AudioPlayer from "./AudioPlayer";
-import LexicalTextRenderer from "./LexicalRenderer";
+import LexicalTextRenderer from "./LexicalRendererWithInput";
 
 interface Props {
   audioUrl: string;
