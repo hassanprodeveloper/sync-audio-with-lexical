@@ -37,7 +37,6 @@ const LexicalEditor = (props: Props) => {
   const { onComplete } = props;
 
   const [editorState, setEditorState] = React.useState();
-  console.log("editorState", editorState);
 
   function onChange(editorState: any) {
     const editorStateJSON = editorState.toJSON();

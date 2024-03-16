@@ -1,6 +1,5 @@
 "use client";
 import { useSyncAudioSteps } from "@/context/SyncAudioSteps";
-import uploadFileToFirebaseStorage from "@/services/firebase/storage";
 import React, { useState } from "react";
 
 const AudioUploadForm: React.FC = () => {

@@ -6,6 +6,8 @@ import { useSyncAudioSteps } from "@/context/SyncAudioSteps";
 const Preview = () => {
   const { data } = useSyncAudioSteps();
 
+  console.log("lexical JSON", data.editorState);
+
   const [currentTime, setCurrentTime] = React.useState(0);
 
   return (
