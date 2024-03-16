@@ -22,7 +22,7 @@ const StepsProgress = () => {
   const { step } = useSyncAudioSteps();
   const progress = Math.round((step / steps.length) * 100);
   return (
-    <div>
+    <div className="my-8">
       <h2 className="sr-only">Steps</h2>
 
       <div>

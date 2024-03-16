@@ -9,7 +9,7 @@ const AudioUploadForm: React.FC = () => {
   // State to manage uploading status
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
-  const { onUploadAudioSuccessful } = useSyncAudioSteps();
+  const { onUploadAudio } = useSyncAudioSteps();
 
   // Handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,11 +21,10 @@ const AudioUploadForm: React.FC = () => {
   const handleUpload = async () => {
     if (file) {
       setIsUploading(true);
-      const url = await uploadFileToFirebaseStorage(file);
+      onUploadAudio(file);
 
       setIsUploading(false);
-      //   alert(`File uploaded successfully! ==>> ${url}`);
-      onUploadAudioSuccessful(url);
+
       // Reset file input
       setFile(null);
       const fileInput = document.getElementById(

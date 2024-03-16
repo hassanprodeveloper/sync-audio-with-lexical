@@ -1,5 +1,5 @@
 import { assignUniqueIdsToTextNodes, addTimeToTextNode } from "@/helpers";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { createContext } from "react";
 
 interface Props {
@@ -976,10 +976,10 @@ const defaultData = {
   },
 };
 const initialState = {
-  step: 0,
+  step: 1,
   data: defaultData,
   setStep: (step: number) => 0 as any,
-  onUploadAudioSuccessful: (url: string) => 0 as any,
+  onUploadAudio: (file: File) => 0 as any,
   onTextFormattingComplete: (editorState: any) => 0 as any,
   handleAddTimeToTextNode: (id: string, startTime: number, endTime: number) =>
     0 as any,
@@ -992,9 +992,12 @@ const SyncAudioStepsProvider = ({ children }: Props) => {
   const [step, setStep] = React.useState(initialState.step);
   const [data, setData] = React.useState(initialState.data);
 
-  const onUploadAudioSuccessful = (url: string) => {
-    setStep(2);
-    setData({ ...data, audio: url });
+  const onUploadAudio = (file: File) => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setData((prev) => ({ ...prev, audio: url }));
+      setStep(2);
+    }
   };
 
   const onTextFormattingComplete = (editorState: any) => {
@@ -1021,11 +1024,20 @@ const SyncAudioStepsProvider = ({ children }: Props) => {
     );
   };
 
+  useEffect(() => {
+    // Clean up URL object to avoid memory leaks
+    return () => {
+      if (data.audio) {
+        URL.revokeObjectURL(data.audio);
+      }
+    };
+  }, [data.audio]);
+
   const values = {
     step,
     setStep,
     data,
-    onUploadAudioSuccessful,
+    onUploadAudio,
     onTextFormattingComplete,
     handleAddTimeToTextNode,
   };
