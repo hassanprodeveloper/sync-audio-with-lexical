@@ -59,6 +59,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
     setIsPlaying(!isPlaying);
   };
 
+  const copyCurrentTime = () => {
+    navigator.clipboard.writeText(currentTime.toFixed(2));
+  };
+
   return (
     <div className="my-8">
       <audio src={audioUrl} ref={audioRef} />
@@ -69,7 +73,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
       </div>
       <div>
         <p>Duration: {duration.toFixed(2)} seconds</p>
-        <p>Current Time: {currentTime.toFixed(2)} seconds</p>
+        <p onClick={copyCurrentTime} style={{cursor:'pointer'}}>
+          Current Time: {currentTime.toFixed(2)} seconds
+        </p>
       </div>
     </div>
   );
