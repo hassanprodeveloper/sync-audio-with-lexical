@@ -1,15 +1,15 @@
 "use client";
+import { useSyncAudioSteps } from "@/context/SyncAudioSteps";
 import uploadFileToFirebaseStorage from "@/services/firebase/storage";
 import React, { useState } from "react";
-interface Props {
-  onUploadAudioSuccessful: (url: string) => void;
-}
 
-const AudioUploadForm: React.FC<Props> = ({ onUploadAudioSuccessful }) => {
+const AudioUploadForm: React.FC = () => {
   // State to manage the file
   const [file, setFile] = useState<File | null>(null);
   // State to manage uploading status
   const [isUploading, setIsUploading] = useState<boolean>(false);
+
+  const { onUploadAudioSuccessful } = useSyncAudioSteps();
 
   // Handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

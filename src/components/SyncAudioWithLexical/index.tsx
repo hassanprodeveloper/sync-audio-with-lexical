@@ -1,28 +1,21 @@
+import { useSyncAudioSteps } from "@/context/SyncAudioSteps";
 import AudioPlayer from "./AudioPlayer";
 import LexicalTextRenderer from "./LexicalRendererWithInput";
 
-interface Props {
-  audioUrl: string;
-  lexical: any;
-  onComplete: () => any;
-  handleAddTimeToTextNode: (
-    id: string,
-    startTime: number,
-    endTime: number
-  ) => void;
-}
-const SyncAudioWithLexical = ({
-  audioUrl,
-  lexical,
-  handleAddTimeToTextNode,
-  onComplete,
-}: Props) => {
+const SyncAudioWithLexical = () => {
+  const { data, setStep, handleAddTimeToTextNode } = useSyncAudioSteps();
+
+  const onComplete = () => {
+    setStep(4);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div>
-      <AudioPlayer audioUrl={audioUrl} />
+      <AudioPlayer audioUrl={data.audio} />
 
       <LexicalTextRenderer
-        lexicalJson={lexical}
+        lexicalJson={data.editorState}
         saveNodeTime={handleAddTimeToTextNode}
       />
 

@@ -1,6 +1,4 @@
-interface Props {
-  currentStep: number;
-}
+import { useSyncAudioSteps } from "@/context/SyncAudioSteps";
 
 const steps = [
   {
@@ -20,8 +18,9 @@ const steps = [
     name: "Preview",
   },
 ];
-const StepsProgress = ({ currentStep }: Props) => {
-  const progress = Math.round((currentStep / steps.length) * 100);
+const StepsProgress = () => {
+  const { step } = useSyncAudioSteps();
+  const progress = Math.round((step / steps.length) * 100);
   return (
     <div>
       <h2 className="sr-only">Steps</h2>
@@ -35,18 +34,18 @@ const StepsProgress = ({ currentStep }: Props) => {
         </div>
 
         <ol className="mt-4 grid grid-cols-4 text-sm font-medium text-gray-500">
-          {steps.map((step) => (
+          {steps.map((item) => (
             <li
-              key={step.id}
+              key={item.id}
               className={`flex items-center  sm:gap-1.5 ${
-                step.id === 1
+                item.id === 1
                   ? " justify-start "
-                  : step.id === steps.length
+                  : item.id === steps.length
                   ? "justify-end"
                   : "justify-center"
-              } ${step.id <= currentStep && " text-blue-600 "}`}
+              } ${item.id <= step && " text-blue-600 "}`}
             >
-              <span className="hidden sm:inline"> {step.name} </span>
+              <span className="hidden sm:inline"> {item.name} </span>
             </li>
           ))}
 
